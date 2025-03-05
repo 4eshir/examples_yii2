@@ -26,12 +26,12 @@ class VisitRepository
         $this->provider = $provider;
     }
 
-    public function get($id)
+    public function get(int $id)
     {
         return $this->provider->get($id);
     }
 
-    public function getByTrainingGroup($groupId)
+    public function getByTrainingGroup(int $groupId)
     {
         if (get_class($this->provider) == VisitProvider::class) {
             return $this->provider->getByTrainingGroup($groupId);
@@ -40,12 +40,12 @@ class VisitRepository
         }
     }
 
-    public function getByTrainingGroupParticipant($trainingGroupParticipantId)
+    public function getByTrainingGroupParticipant(int $trainingGroupParticipantId)
     {
         return $this->provider->getByTrainingGroupParticipant($trainingGroupParticipantId);
     }
 
-    public function getByGroupAndParticipant($groupId, $participantId)
+    public function getByGroupAndParticipant(int $groupId, int $participantId)
     {
         return VisitWork::find()
             ->joinWith(['trainingGroupParticipantWork trainingGroupParticipantWork'])
@@ -64,7 +64,7 @@ class VisitRepository
         return $this->provider->save($visit);
     }
 
-    public function getParticipantsFromGroup($groupId)
+    public function getParticipantsFromGroup(int $groupId)
     {
         if (get_class($this->provider) == VisitProvider::class) {
             return $this->provider->getParticipantsFromGroup($groupId);
@@ -73,7 +73,7 @@ class VisitRepository
         }
     }
 
-    public function getLessonsFromGroup($groupId)
+    public function getLessonsFromGroup(int $groupId)
     {
         if (get_class($this->provider) == VisitProvider::class) {
             return $this->provider->getLessonsFromGroup($groupId);
@@ -82,7 +82,7 @@ class VisitRepository
         }
     }
 
-    public function prepareUpdateLessons($visitIds, $lessons)
+    public function prepareUpdateLessons(int $visitIds, string $lessons)
     {
         $command = Yii::$app->db->createCommand();
         $command->update(
