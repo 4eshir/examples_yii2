@@ -9,12 +9,12 @@ use yii\db\Exception;
 
 class FilesRepository
 {
-    public function getById($id)
+    public function getById(int $id)
     {
         return FilesWork::find()->where(['id' => $id])->one();
     }
 
-    public function get($tableName, $tableRowId, $fileType)
+    public function get(string $tableName, int $tableRowId, int $fileType)
     {
         return FilesWork::find()
             ->where(['table_name' => $tableName])
@@ -23,7 +23,7 @@ class FilesRepository
             ->all();
     }
 
-    public function getLastFile($tableName, $tableRowId, $fileType)
+    public function getLastFile(string $tableName, int $tableRowId, int $fileType)
     {
         return FilesWork::find()
             ->where(['table_name' => $tableName])
@@ -35,13 +35,13 @@ class FilesRepository
 
     /**
      * Подготавливает запрос для создания новой записи в таблице
-     * @param $tableName
-     * @param $tableRowId
-     * @param $filetype
-     * @param $filepath
+     * @param string $tableName
+     * @param int $tableRowId
+     * @param int $filetype
+     * @param string $filepath
      * @return string
      */
-    public function prepareCreate($tableName, $tableRowId, $filetype, $filepath)
+    public function prepareCreate(string $tableName, int $tableRowId, int $filetype, string $filepath) : string
     {
         $model = FilesWork::fill($tableName, $tableRowId, $filetype, $filepath);
         $command = Yii::$app->db->createCommand();
@@ -52,13 +52,13 @@ class FilesRepository
 
     /**
      * Подготавливает запрос для изменения существующей записи в таблице
-     * @param $tableName
-     * @param $tableRowId
-     * @param $filetype
-     * @param $filepath
+     * @param string $tableName
+     * @param int $tableRowId
+     * @param int $filetype
+     * @param string $filepath
      * @return string
      */
-    public function prepareUpdate($tableName, $tableRowId, $filetype, $filepath)
+    public function prepareUpdate(string $tableName, int $tableRowId, int $filetype, string $filepath) : string
     {
         $model = $this->get($tableName, $tableRowId, $filetype);
         if (count($model) == 0) {
@@ -73,10 +73,10 @@ class FilesRepository
 
     /**
      * Подготавливает запрос для удаления существующей записи в таблице
-     * @param $id
+     * @param int $id
      * @return string
      */
-    public function prepareDelete($id)
+    public function prepareDelete(int $id)
     {
         $model = $this->getById($id);
         if (!$model) {
