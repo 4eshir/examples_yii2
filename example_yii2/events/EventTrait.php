@@ -81,7 +81,6 @@ trait EventTrait
             $this->clearQueries();
         }
         catch (\yii\db\Exception $e) {
-            var_dump($e->getMessage());
             Yii::error($e->getMessage());
             $transaction->rollBack();
         }
