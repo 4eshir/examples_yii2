@@ -14,7 +14,7 @@ class VisitProvider implements VisitProviderInterface
 {
     public function get($id)
     {
-        return VisitWork::find()->where(['id' => $id])->one();
+        return VisitWork::find()->with('trainingGroupParticipantWork')->where(['id' => $id])->one();
     }
 
     public function getByTrainingGroup($groupId)
