@@ -5,12 +5,13 @@ namespace common\services\general\files;
 use common\helpers\files\FilesHelper;
 use common\services\general\files\download\FileDownloadServer;
 use common\services\general\files\download\FileDownloadYandexDisk;
+use yii\web\UploadedFile;
 use DomainException;
 use Yii;
 
 class FileService
 {
-    public function downloadFile($filepath)
+    public function downloadFile(string $filepath)
     {
         $downloadServ = new FileDownloadServer($filepath);
         $downloadYadi = new FileDownloadYandexDisk($filepath);
@@ -38,12 +39,12 @@ class FileService
     /**
      * Функция загрузки файла на сервер или ЯД
      * в $params необходимо передать либо filepath, либо пару tableName + fileType
-     * @param $file
-     * @param $filename
-     * @param $params ['filepath' => %относительный_путь_к_файлу%, 'tableName' => %имя_таблицы%, 'fileType' => %тип_файла%]
+     * @param UploadedFile $file
+     * @param string$filename
+     * @param string $params ['filepath' => %относительный_путь_к_файлу%, 'tableName' => %имя_таблицы%, 'fileType' => %тип_файла%]
      * @return void
      */
-    public function uploadFile($file, $filename, $params = '')
+    public function uploadFile(UploadedFile $file, string $filename, string $params = '')
     {
         if (array_key_exists('filepath', $params)) {
             $finalPath = $params['filepath'];
@@ -62,7 +63,7 @@ class FileService
         }
     }
 
-    public function deleteFile($filepath)
+    public function deleteFile(string $filepath)
     {
         // тут будет стратегия для загрузки на яндекс диск... потом
 
