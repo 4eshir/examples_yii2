@@ -220,7 +220,7 @@ class DocumentInWork extends DocumentIn implements FileInterface
         return $editor ? $editor->getFullName() : '---';
     }
 
-    private function createAddPaths($filetype)
+    private function createAddPaths(int $filetype)
     {
         if (!array_key_exists($filetype, FilesHelper::getFileTypes())) {
             throw new InvalidArgumentException('Неизвестный тип файла');
@@ -246,16 +246,16 @@ class DocumentInWork extends DocumentIn implements FileInterface
      * Возвращает массив
      * link => форматированная ссылка на документ
      * id => ID записи в таблице files
-     * @param $filetype
+     * @param int $filetype
      * @return array
      * @throws \yii\base\InvalidConfigException
      */
-    public function getFileLinks($filetype) : array
+    public function getFileLinks(int $filetype) : array
     {
         return FilesHelper::createFileLinks($this, $filetype, $this->createAddPaths($filetype));
     }
 
-    public function getFilePaths($filetype): array
+    public function getFilePaths(int $filetype): array
     {
         return FilesHelper::createFilePaths($this, $filetype, $this->createAddPaths($filetype));
     }
@@ -305,7 +305,7 @@ class DocumentInWork extends DocumentIn implements FileInterface
         $year = substr(DateFormatter::format($this->local_date, DateFormatter::dmY_dot, DateFormatter::Ymd_dash), 0, 4);
         $local_date = DateFormatter::format($this->local_date, DateFormatter::dmY_dot, DateFormatter::Ymd_dash);
         $docs = Yii::createObject(DocumentInRepository::class)->getAll();
-        if($docs == NULL){
+        if (is_null($docs){
             $this->local_number = '1';
             $this->local_postfix = 0;
         }
@@ -313,19 +313,16 @@ class DocumentInWork extends DocumentIn implements FileInterface
             $down = Yii::createObject(DocumentInRepository::class)->findDownNumber($year, $local_date);
             $up = Yii::createObject(DocumentInRepository::class)->findUpNumber($year, $local_date);
             $down_max = Yii::createObject(DocumentInRepository::class)->findMaxDownNumber($year, $local_date);
-            if($up == null && $down == null) {
+            if (is_null($up) && is_null($down)) {
                 $this->local_number = '1';
                 $this->local_postfix = 0;
-            }
-            if($up == null && $down != null) {
+            } else if (is_null($up) && !is_null($down)) {
                 $this->local_number = $down_max + 1;
                 $this->local_postfix = 0;
-            }
-            if($up != null && $down == null){
+            } else if (!is_null($up) && is_null($down)){
                 $this->local_number = '0';
                 $this->local_postfix = '0';
-            }
-            if($up != null && $down != null){
+            } else {
                 $this->local_number = $down_max ;
                 $max_postfix  = Yii::createObject(DocumentInRepository::class)->findMaxPostfix($year, $this->local_number);
                 $this->local_postfix = $max_postfix + 1;
