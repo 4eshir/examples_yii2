@@ -114,7 +114,7 @@ class DocumentController extends Controller
         unlink($tempFile);
     }
 
-    public function actionDeleteFile($modelId, $fileId)
+    public function actionDeleteFile(int $modelId, int $fileId)
     {
         try {
             $file = $this->filesRepository->getById($fileId);
