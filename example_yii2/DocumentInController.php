@@ -253,11 +253,11 @@ class DocumentInController extends DocumentController
 
     public function beforeAction($action)
     {
-        /*if (Yii::$app->rac->isGuest() || !Yii::$app->rac->checkUserAccess(Yii::$app->rac->authId(), get_class(Yii::$app->controller), $action)) {
+        if (Yii::$app->rac->isGuest() || !Yii::$app->rac->checkUserAccess(Yii::$app->rac->authId(), get_class(Yii::$app->controller), $action)) {
             Yii::$app->session->setFlash('error', 'У Вас недостаточно прав. Обратитесь к администратору для получения доступа');
             $this->redirect(Yii::$app->request->referrer);
             return false;
-        }*/
+        }
 
         return parent::beforeAction($action); 
     }
