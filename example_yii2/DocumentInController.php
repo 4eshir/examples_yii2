@@ -232,7 +232,7 @@ class DocumentInController extends DocumentController
         $id = Yii::$app->request->post('id');
         $response = '';
 
-        if ($id === '') {
+        if (empty($id)) {
             // Получаем позиции и компании
             $response .= HtmlBuilder::buildOptionList($this->positionRepository->getList());
             $response .= "|split|";
