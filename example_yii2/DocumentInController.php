@@ -103,10 +103,6 @@ class DocumentInController extends DocumentController
     public function actionCreate()
     {
         $model = new DocumentInWork();
-        $correspondentList = $this->peopleRepository->getOrderedList(SortHelper::ORDER_TYPE_FIO);
-        $availablePositions = $this->positionRepository->getList();
-        $availableCompanies = $this->companyRepository->getList();
-        $mainCompanyWorkers = $this->peopleRepository->getPeopleFromMainCompany();
         if ($model->load(Yii::$app->request->post())) {
             $model->generateDocumentNumber();
             $this->service->getPeopleStamps($model);
@@ -125,11 +121,7 @@ class DocumentInController extends DocumentController
         }
 
         return $this->render('create', [
-            'model' => $model,
-            'correspondentList' => $correspondentList,
-            'availablePositions' => $availablePositions,
-            'availableCompanies' => $availableCompanies,
-            'mainCompanyWorkers' => $mainCompanyWorkers,
+            'model' => $model
         ]);
     }
     public function actionReserve()
@@ -147,11 +139,6 @@ class DocumentInController extends DocumentController
             $model = $this->repository->get($id);
             /** @var DocumentInWork $model */
             $model->setValuesForUpdate();
-
-            $correspondentList = $this->peopleRepository->getOrderedList(SortHelper::ORDER_TYPE_FIO);
-            $availablePositions = $this->positionRepository->getList($model->correspondentWork->people_id);
-            $availableCompanies = $this->companyRepository->getList($model->correspondentWork->people_id);
-            $mainCompanyWorkers = $this->peopleRepository->getPeopleFromMainCompany();
             $tables = $this->service->getUploadedFilesTables($model);
             if ($model->load(Yii::$app->request->post())) {
                 $this->lockWizard->unlockObject($id, StringFormatter::getLastSegmentBySlash($this->id));
@@ -196,14 +183,7 @@ class DocumentInController extends DocumentController
             }
 
             return $this->render('update', [
-                'model' => $model,
-                'correspondentList' => $correspondentList,
-                'availablePositions' => $availablePositions,
-                'availableCompanies' => $availableCompanies,
-                'mainCompanyWorkers' => $mainCompanyWorkers,
-                'scanFile' => $tables['scan'],
-                'docFiles' => $tables['doc'],
-                'appFiles' => $tables['app'],
+                'model' => $model
             ]);
         }
         else {
